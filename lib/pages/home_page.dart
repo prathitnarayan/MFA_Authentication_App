@@ -6,8 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:otp/otp.dart';
 import 'package:qr_code_auth/pages/qr_code_page.dart';
 import 'package:qr_code_auth/pages/settings.dart';
-import 'package:qr_code_auth/pages/auth_page.dart';
-import 'package:qr_code_auth/services/otp_storage_service.dart'; // Add this import
+import 'package:qr_code_auth/services/otp_storage_service.dart';
 
 class HomePage extends StatefulWidget {
   final String? secret;
@@ -159,19 +158,6 @@ class _HomePageState extends State<HomePage> {
     _timer.cancel();
     super.dispose();
   }
-
-  // Navigation logic
-  void _navBottomBar(int index) {
-    setState(() {
-      _selectedIndex = index;
-      print("Current page index: $_selectedIndex");
-    });
-  }
-
-  // Pages for each bottom nav item
-  final List<Widget> _pages = [
-    AuthPage(), // Actual Auth content page
-  ];
 
   Widget _buildIndividualTimer(double progress) {
     return SizedBox(
