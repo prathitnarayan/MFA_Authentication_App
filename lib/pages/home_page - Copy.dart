@@ -235,199 +235,214 @@ class _HomePageState extends State<HomePage> {
 
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            ...otpAccounts.asMap().entries.map((entry) {
-              final int index = entry.key;
-              final Map<String, dynamic> account = entry.value;
-              final double progress = secondsRemaining / 30.0;
+      child: Column(
+        children: [
+          // Global timer display
+          // Container(
+          //   margin: const EdgeInsets.only(bottom: 20),
+          //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          //   decoration: BoxDecoration(
+          //     color: Colors.blue[50],
+          //     borderRadius: BorderRadius.circular(8),
+          //     border: Border.all(color: Colors.blue[200]!),
+          //   ),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: [
+          //       Icon(Icons.access_time, size: 16, color: Colors.blue[900]),
+          //       SizedBox(width: 8),
+          //       Text(
+          //         'All codes refresh in $secondsRemaining seconds',
+          //         style: TextStyle(
+          //           fontSize: 16,
+          //           fontWeight: FontWeight.w500,
+          //           color: Colors.blue[900],
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          // OTP List with individual timers
+          ...otpAccounts.asMap().entries.map((entry) {
+            final int index = entry.key;
+            final Map<String, dynamic> account = entry.value;
+            final double progress = secondsRemaining / 30.0;
 
-              return Container(
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                padding: const EdgeInsets.all(20),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.blue.withOpacity(0.1),
-                      spreadRadius: 1,
-                      blurRadius: 8,
-                      offset: Offset(0, 2),
-                    ),
-                  ],
-                  border: Border.all(color: Colors.blue[100]!, width: 1),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Header row with issuer, timer, and actions
-                    Row(
-                      children: [
-                        // Issuer icon and name
-                        Container(
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: Colors.blue[50],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Icon(
-                            Icons.security,
-                            size: 16,
-                            color: Colors.blue[700],
-                          ),
+            return Container(
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.all(20),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blue.withOpacity(0.1),
+                    spreadRadius: 1,
+                    blurRadius: 8,
+                    offset: Offset(0, 2),
+                  ),
+                ],
+                border: Border.all(color: Colors.blue[100]!, width: 1),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header row with issuer, timer, and actions
+                  Row(
+                    children: [
+                      // Issuer icon and name
+                      Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.blue[50],
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                account['issuer'],
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                              Text(
-                                account['accountName'],
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.black54,
-                                ),
-                              ),
-                            ],
-                          ),
+                        child: Icon(
+                          Icons.security,
+                          size: 16,
+                          color: Colors.blue[700],
                         ),
-                        // Individual timer with moon icon
-                        Column(
+                      ),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildIndividualTimer(progress),
-                            SizedBox(height: 4),
                             Text(
-                              '${secondsRemaining}s',
-                              style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w500,
-                                color: progress > 0.3
-                                    ? Colors.blue[700]
-                                    : Colors.orange[600],
+                              account['issuer'],
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            Text(
+                              account['accountName'],
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.black54,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(width: 8),
-                        // Action buttons
-                        PopupMenuButton<String>(
-                          icon: Icon(Icons.more_vert, color: Colors.grey[600]),
-                          onSelected: (value) {
-                            switch (value) {
-                              case 'copy':
-                                _copyToClipboard(account['otp']);
-                                break;
-                              case 'delete':
-                                _showDeleteConfirmation(index);
-                                break;
-                            }
-                          },
-                          itemBuilder: (context) => [
-                            PopupMenuItem(
-                              value: 'copy',
-                              child: Row(
-                                children: [
-                                  Icon(Icons.copy, size: 18),
-                                  SizedBox(width: 8),
-                                  Text('Copy Code'),
-                                ],
-                              ),
-                            ),
-                            PopupMenuItem(
-                              value: 'delete',
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.delete,
-                                    size: 18,
-                                    color: Colors.red,
-                                  ),
-                                  SizedBox(width: 8),
-                                  Text(
-                                    'Delete',
-                                    style: TextStyle(color: Colors.red),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 16),
-                    // OTP Code display
-                    Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(
-                        vertical: 16,
-                        horizontal: 20,
                       ),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[50],
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey[200]!),
-                      ),
-                      child: Row(
+                      // Individual timer with moon icon
+                      Column(
                         children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () => _copyToClipboard(account['otp']),
-                              child: Text(
-                                _showTOTP
-                                    ? _formatOTP(account['otp'])
-                                    : '•••  •••',
-                                style: const TextStyle(
-                                  fontSize: 28,
-                                  letterSpacing: 3.0,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'monospace',
-                                  color: Colors.black87,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
+                          _buildIndividualTimer(progress),
+                          SizedBox(height: 4),
+                          Text(
+                            '${secondsRemaining}s',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w500,
+                              color: progress > 0.3
+                                  ? Colors.blue[700]
+                                  : Colors.orange[600],
                             ),
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.copy,
-                              color: Colors.blue[700],
-                              size: 20,
-                            ),
-                            onPressed: () => _copyToClipboard(account['otp']),
-                            tooltip: 'Copy to clipboard',
                           ),
                         ],
                       ),
-                    ),
-                    // Progress bar for visual indication
-                    SizedBox(height: 12),
-                    LinearProgressIndicator(
-                      value: progress,
-                      backgroundColor: Colors.grey[200],
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        progress > 0.3
-                            ? Colors.blue[600]!
-                            : Colors.orange[500]!,
+                      SizedBox(width: 8),
+                      // Action buttons
+                      PopupMenuButton<String>(
+                        icon: Icon(Icons.more_vert, color: Colors.grey[600]),
+                        onSelected: (value) {
+                          switch (value) {
+                            case 'copy':
+                              _copyToClipboard(account['otp']);
+                              break;
+                            case 'delete':
+                              _showDeleteConfirmation(index);
+                              break;
+                          }
+                        },
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            value: 'copy',
+                            child: Row(
+                              children: [
+                                Icon(Icons.copy, size: 18),
+                                SizedBox(width: 8),
+                                Text('Copy Code'),
+                              ],
+                            ),
+                          ),
+                          PopupMenuItem(
+                            value: 'delete',
+                            child: Row(
+                              children: [
+                                Icon(Icons.delete, size: 18, color: Colors.red),
+                                SizedBox(width: 8),
+                                Text(
+                                  'Delete',
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                      minHeight: 3,
+                    ],
+                  ),
+                  SizedBox(height: 16),
+                  // OTP Code display
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[50],
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.grey[200]!),
                     ),
-                  ],
-                ),
-              );
-            }).toList(),
-          ],
-        ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => _copyToClipboard(account['otp']),
+                            child: Text(
+                              _showTOTP
+                                  ? _formatOTP(account['otp'])
+                                  : '•••  •••',
+                              style: const TextStyle(
+                                fontSize: 28,
+                                letterSpacing: 3.0,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'monospace',
+                                color: Colors.black87,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.copy,
+                            color: Colors.blue[700],
+                            size: 20,
+                          ),
+                          onPressed: () => _copyToClipboard(account['otp']),
+                          tooltip: 'Copy to clipboard',
+                        ),
+                      ],
+                    ),
+                  ),
+                  // Progress bar for visual indication
+                  SizedBox(height: 12),
+                  LinearProgressIndicator(
+                    value: progress,
+                    backgroundColor: Colors.grey[200],
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      progress > 0.3 ? Colors.blue[600]! : Colors.orange[500]!,
+                    ),
+                    minHeight: 3,
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+        ],
       ),
     );
   }
@@ -552,14 +567,14 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
-                // ListTile(
-                //   leading: const Icon(Icons.home),
-                //   title: const Text('Home'),
-                //   onTap: () {
-                //     Navigator.pop(context);
-                //     _navBottomBar(0);
-                //   },
-                // ),
+                ListTile(
+                  leading: const Icon(Icons.home),
+                  title: const Text('Home'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _navBottomBar(0);
+                  },
+                ),
                 ListTile(
                   leading: Icon(
                     _showTOTP ? Icons.visibility : Icons.visibility_off,
@@ -591,24 +606,29 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                 ),
-                // ListTile(
-                //   leading: const Icon(Icons.help_center),
-                //   title: const Text('Help'),
-                //   onTap: () {},
-                // ),
-                // ListTile(
-                //   leading: const Icon(Icons.feedback_outlined),
-                //   title: const Text('Send Feedback'),
-                //   onTap: () {},
-                // ),
+                ListTile(
+                  leading: const Icon(Icons.help_center),
+                  title: const Text('Help'),
+                  onTap: () {},
+                ),
+                ListTile(
+                  leading: const Icon(Icons.feedback_outlined),
+                  title: const Text('Send Feedback'),
+                  onTap: () {},
+                ),
               ],
             ),
           ),
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 25, right: 25, top: 25),
-        child: _buildOTPList(), // Directly using the list here
+        padding: EdgeInsets.only(left: 25, right: 25, top: 25),
+        child: Column(
+          children: [
+            Flexible(child: _pages[_selectedIndex]),
+            Expanded(child: SingleChildScrollView(child: _buildOTPList())),
+          ],
+        ),
       ),
     );
   }

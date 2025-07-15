@@ -37,7 +37,12 @@ dependencies:
   cupertino_icons: ^1.0.8
   
   # QR Code Scanning
-  mobile_scanner: ^7.0.1
+  # mobile_scanner: ^7.0.1
+  mobile_scanner: ^5.2.3
+  # pubspec.yaml
+  # mobile_scanner: 3.3.0+3
+
+
   
   # Camera Permissions
   permission_handler: ^12.0.1
@@ -54,6 +59,8 @@ dependencies:
 
   # uuid Dependencie 
   uuid: ^4.3.3
+  encrypt: ^5.0.3
+  crypto: ^3.0.6
 
 dev_dependencies:
   flutter_test:
