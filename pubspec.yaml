@@ -31,6 +31,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  animated_splash_screen: 
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
     # UI Components
@@ -65,6 +67,21 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "lib/assets/icons/Logo_qr_au.png"
+  min_sdk_android: 21
+  remove_alpha_ios: true
+
+
+
+# flutter_icons:
+#   android: true
+#   ios: true
+#   image_path: "lib/assets/icons/Logo_qr_au.png"
 
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -84,6 +101,8 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - lib/assets/icons/Logo_qr_au.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

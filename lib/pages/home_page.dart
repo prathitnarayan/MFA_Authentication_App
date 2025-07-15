@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:otp/otp.dart';
 import 'package:qr_code_auth/pages/qr_code_page.dart';
 import 'package:qr_code_auth/pages/settings.dart';
-import 'package:qr_code_auth/services/otp_storage_service.dart';
+import 'package:qr_code_auth/services/otp_storage_service.dart'; // Add this import
 
 class HomePage extends StatefulWidget {
   final String? secret;
@@ -158,7 +158,6 @@ class _HomePageState extends State<HomePage> {
     _timer.cancel();
     super.dispose();
   }
-
   Widget _buildIndividualTimer(double progress) {
     return SizedBox(
       width: 24,

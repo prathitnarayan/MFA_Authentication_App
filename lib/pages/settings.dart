@@ -134,13 +134,6 @@ class _SettingsPageState extends State<SettingsPage> {
       appBar: AppBar(
         title: const Text("Settings"),
         backgroundColor: Colors.blue[900],
-        actions: [
-          // Debug button - remove in production
-          IconButton(
-            icon: const Icon(Icons.bug_report),
-            onPressed: _debugStorage,
-          ),
-        ],
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
